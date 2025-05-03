@@ -219,6 +219,12 @@ const Venta = ({ clientes, productos, addVenta }) => {
                 onClick={() => handleAddProducto(producto)}
               >
                 <div className="producto-header">
+                  {/* Mostrar la imagen del producto */}
+                  <img 
+                    src={`http://localhost:4000/uploads/${producto.imagen}`} 
+                    alt={producto.nombre} 
+                    className="producto-imagen"
+                  />
                   <span className="producto-nombre">{producto.nombre}</span>
                   <span className="producto-precio">S/. {producto.precio.toFixed(2)}</span>
                 </div>
@@ -249,6 +255,12 @@ const Venta = ({ clientes, productos, addVenta }) => {
               {productosSeleccionados.map(producto => (
                 <div key={producto._id} className="carrito-item">
                   <div className="producto-info">
+                    {/* Mostrar la imagen del producto */}
+                    <img 
+                      src={`http://localhost:4000/uploads/${producto.imagen}`} 
+                      alt={producto.nombre} 
+                      className="producto-imagen"
+                    />
                     <span className="nombre">{producto.nombre}</span>
                     <span className="precio-unitario">S/. {producto.precio.toFixed(2)} c/u</span>
                   </div>
@@ -299,7 +311,7 @@ const Venta = ({ clientes, productos, addVenta }) => {
           </button>
           
           <button 
-            className="btn-confirmar"
+            className="btn-finalizar"
             onClick={handleSubmitVenta}
           >
             <FiCheck /> Confirmar Venta

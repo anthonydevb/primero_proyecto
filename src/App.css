@@ -1,3 +1,4 @@
+/* Contenedor principal de la app */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -5,14 +6,16 @@
   background-color: #f5f5f5;
 }
 
+/* Cabecera de la aplicación */
 .app-header {
-  background: linear-gradient(45deg, #000000, #000000);
+  background: linear-gradient(45deg, #005eff, #000000);
   color: white;
   padding: 1rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* Contenido principal de la app */
 .main-content {
   padding: 20px;
   max-width: 1200px;
@@ -20,12 +23,14 @@
   width: 100%;
 }
 
+/* Contenedor de secciones en la parte superior */
 .top-sections {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
 }
 
+/* Estilo para cada sección */
 .section {
   background: white;
   border-radius: 8px;
@@ -33,14 +38,17 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+/* Sección de clientes (ajustada para 1/3 del ancho) */
 .cliente-section {
   flex: 1;
 }
 
+/* Sección de productos (ajustada para 2/3 del ancho) */
 .producto-section {
   flex: 2;
 }
 
+/* Estilo para el encabezado de cada sección */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -48,12 +56,14 @@
   margin-bottom: 15px;
 }
 
+/* Título de cada sección */
 .section-title {
   font-size: 1.3rem;
   color: #333;
   margin: 0;
 }
 
+/* Botón principal (usado para agregar productos o clientes) */
 .button {
   background: #3400f0;
   color: white;
@@ -68,12 +78,14 @@
   font-size: 1rem;
 }
 
+/* Estilo para la lista de clientes y productos */
 .clientes-list, .productos-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Cada item de cliente o producto */
 .cliente-item, .producto-item {
   display: flex;
   justify-content: space-between;
@@ -83,23 +95,45 @@
   border-radius: 5px;
 }
 
+/* Contenedor de información del producto */
 .producto-info {
   display: flex;
   flex-direction: column;
 }
 
-.producto-detalles {
+/* Detalles del producto (precio, stock, etc.) */
+.producto-detalle {
   display: flex;
   gap: 10px;
   font-size: 0.9rem;
   color: #666;
 }
 
+/* Estilo de la imagen del producto */
+.producto-imagen {
+  width: 60px; /* Tamaño de la imagen */
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Información adicional de precio y stock */
+.producto-precio-stock {
+  display: flex;
+  flex-direction: column; /* Alineamos precio y stock verticalmente */
+  gap: 5px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Acciones para editar o eliminar productos */
 .cliente-actions, .producto-actions {
   display: flex;
   gap: 5px;
 }
 
+/* Estilo de los botones de editar y eliminar */
 .edit-button, .delete-button {
   background: none;
   border: none;
@@ -107,14 +141,17 @@
   font-size: 1rem;
 }
 
+/* Color para el botón de editar */
 .edit-button {
   color: #2196F3;
 }
 
+/* Color para el botón de eliminar */
 .delete-button {
   color: #f44336;
 }
 
+/* Sección de ventas */
 .ventas-section {
   background: white;
   border-radius: 8px;
@@ -122,27 +159,32 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+/* Estilo para la tabla de ventas */
 .ventas-table-container {
   margin-top: 20px;
   overflow-x: auto;
 }
 
+/* Estilo para la tabla de ventas */
 .ventas-table {
   width: 100%;
   border-collapse: collapse;
 }
 
+/* Estilo para las celdas de la tabla */
 .ventas-table th, .ventas-table td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
+/* Encabezados de la tabla de ventas */
 .ventas-table th {
   background-color: #f8f9fa;
   font-weight: bold;
 }
 
+/* Estilo para cuando se pasa el cursor sobre una fila de la tabla */
 .ventas-table tr:hover {
   background-color: #f5f5f5;
 }

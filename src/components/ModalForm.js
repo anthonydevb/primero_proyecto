@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const ModalForm = ({ addCliente, closeModal }) => {
   const [nombre, setNombre] = useState('');
@@ -11,18 +12,43 @@ const ModalForm = ({ addCliente, closeModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificamos que todos los campos estén completos
+    // Validaciones
+    const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const soloNumeros = /^[0-9]+$/;
+
     if (!nombre || !telefono || !correo || !documento) {
-      alert('Por favor, completa todos los campos');
-      return;
+      return Swal.fire('Campos incompletos', 'Completa todos los campos', 'warning');
+    }
+
+    if (!soloLetras.test(nombre)) {
+      return Swal.fire('Nombre inválido', 'El nombre solo debe contener letras', 'error');
+    }
+
+    if (!soloNumeros.test(telefono) || telefono.length !== 9) {
+      return Swal.fire('Teléfono inválido', 'El teléfono debe tener 9 dígitos numéricos', 'error');
+    }
+
+    if (!soloNumeros.test(documento)) {
+      return Swal.fire('Documento inválido', 'El documento debe contener solo números', 'error');
+    }
+
+    if (
+      (tipoDocumento === 'DNI' && documento.length !== 8) ||
+      (tipoDocumento === 'RUC' && documento.length !== 11)
+    ) {
+      return Swal.fire(
+        'Documento inválido',
+        `El ${tipoDocumento} debe tener ${tipoDocumento === 'DNI' ? 8 : 11} dígitos`,
+        'error'
+      );
     }
 
     const data = {
       name: nombre,
       phone: telefono,
       email: correo,
-      tipoDocumento: tipoDocumento,
-      documento: documento,
+      tipoDocumento,
+      documento,
     };
 
     try {
@@ -35,16 +61,16 @@ const ModalForm = ({ addCliente, closeModal }) => {
       const result = await response.json();
 
       if (response.ok) {
-        addCliente(result); // Llamar a addCliente recibido como prop
-        closeModal(); // Cerrar el modal
+        Swal.fire('Cliente agregado', 'El cliente se registró correctamente', 'success');
+        addCliente(result);
+        closeModal();
       } else {
-        alert('Error al agregar el cliente: ' + result.message);
+        Swal.fire('Error', result.message || 'Error al agregar el cliente', 'error');
       }
     } catch (error) {
-      alert('Error al enviar los datos: ' + error.message);
+      Swal.fire('Error', error.message || 'Error al enviar los datos', 'error');
     }
 
-    // Limpiar campos después de enviar
     setNombre('');
     setTelefono('');
     setCorreo('');
@@ -74,6 +100,7 @@ const ModalForm = ({ addCliente, closeModal }) => {
             <Form.Label>Teléfono</Form.Label>
             <Form.Control
               type="text"
+              maxLength={9}
               placeholder="Teléfono"
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
@@ -109,6 +136,7 @@ const ModalForm = ({ addCliente, closeModal }) => {
             <Form.Label>Documento</Form.Label>
             <Form.Control
               type="text"
+              maxLength={tipoDocumento === 'DNI' ? 8 : 11}
               placeholder="Número de Documento"
               value={documento}
               onChange={(e) => setDocumento(e.target.value)}

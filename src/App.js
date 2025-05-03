@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import ModalForm from './components/ModalForm';
 import ModalProducto from './components/ModalProducto';
 import Venta from './components/Venta';
@@ -38,46 +39,66 @@ function App() {
   };
 
   const deleteCliente = async (clienteId) => {
-    try {
-      const response = await fetch(`http://localhost:4000/api/clients/${clienteId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    const cliente = clientes.find(c => c._id === clienteId);
+    const result = await Swal.fire({
+      title: '¿Eliminar cliente?',
+      text: `¿Estás seguro que deseas eliminar a "${cliente.name}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
 
-      if (response.ok) {
-        setClientes(clientes.filter(cliente => cliente._id !== clienteId));
-        alert('Cliente eliminado exitosamente');
-      } else {
-        const data = await response.json();
-        alert(`Error al eliminar cliente: ${data.message}`);
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`http://localhost:4000/api/clients/${clienteId}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+          setClientes(clientes.filter(cliente => cliente._id !== clienteId));
+          Swal.fire('Eliminado', 'El cliente fue eliminado correctamente.', 'success');
+        } else {
+          const data = await response.json();
+          Swal.fire('Error', `Error al eliminar cliente: ${data.message}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error al eliminar cliente:', error);
+        Swal.fire('Error', 'Hubo un error al eliminar el cliente.', 'error');
       }
-    } catch (error) {
-      console.error('Error al eliminar cliente:', error);
-      alert('Hubo un error al eliminar el cliente. Intenta nuevamente.');
     }
   };
 
   const deleteProducto = async (productoId) => {
-    try {
-      const response = await fetch(`http://localhost:4000/api/products/${productoId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    const producto = productos.find(p => p._id === productoId);
+    const result = await Swal.fire({
+      title: '¿Eliminar producto?',
+      text: `¿Estás seguro que deseas eliminar el producto "${producto.nombre}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
 
-      if (response.ok) {
-        setProductos(productos.filter(producto => producto._id !== productoId));
-        alert('Producto eliminado exitosamente');
-      } else {
-        const data = await response.json();
-        alert(`Error al eliminar producto: ${data.message}`);
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`http://localhost:4000/api/products/${productoId}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+          setProductos(productos.filter(producto => producto._id !== productoId));
+          Swal.fire('Eliminado', 'El producto fue eliminado correctamente.', 'success');
+        } else {
+          const data = await response.json();
+          Swal.fire('Error', `Error al eliminar producto: ${data.message}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error al eliminar producto:', error);
+        Swal.fire('Error', 'Hubo un error al eliminar el producto.', 'error');
       }
-    } catch (error) {
-      console.error('Error al eliminar producto:', error);
-      alert('Hubo un error al eliminar el producto. Intenta nuevamente.');
     }
   };
 
@@ -103,13 +124,8 @@ function App() {
                 <div className="cliente-item" key={cliente._id}>
                   <span>{cliente.name}</span>
                   <div className="cliente-actions">
-                    <button className="edit-button">✏️</button>
-                    <button 
-                      className="delete-button" 
-                      onClick={() => deleteCliente(cliente._id)}
-                    >
-                      🗑️
-                    </button>
+                    <button className="edit-button"></button>
+                    <button className="delete-button" onClick={() => deleteCliente(cliente._id)}>🗑️</button>
                   </div>
                 </div>
               ))}
@@ -134,15 +150,27 @@ function App() {
                       <span><strong>Precio:</strong> ${producto.precio}</span>
                       <span><strong>Stock:</strong> {producto.stock}</span>
                     </div>
+
+                    {producto.imagen && (
+                      <img
+                        src={`http://localhost:4000/uploads/${producto.imagen}`}
+                        alt={producto.nombre}
+                        className="producto-lis"
+                        style={{
+                          width: '20px',
+                          height: '10px',
+                          objectFit: 'cover',
+                          marginTop: '8px',
+                          borderRadius: '8px',
+                          boxShadow: '0 0 5px rgba(0,0,0,0.2)'
+                        }}
+                      />
+                    )}
                   </div>
+
                   <div className="producto-actions">
-                    <button className="edit-button">✏️</button>
-                    <button 
-                      className="delete-button" 
-                      onClick={() => deleteProducto(producto._id)}
-                    >
-                      🗑️
-                    </button>
+                    <button className="edit-button"></button>
+                    <button className="delete-button" onClick={() => deleteProducto(producto._id)}>🗑️</button>
                   </div>
                 </div>
               ))}
@@ -150,12 +178,11 @@ function App() {
           </div>
         </div>
 
-        {/* Sección Ventas (debajo) */}
+        {/* Sección Ventas */}
         <div className="ventas-section">
           <h2 className="section-title">Registro de Ventas</h2>
           <Venta clientes={clientes} productos={productos} addVenta={addVenta} />
-          
-          {/* Tabla de ventas */}
+
           {ventas.length > 0 && (
             <div className="ventas-table-container">
               <table className="ventas-table">
@@ -173,9 +200,7 @@ function App() {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{venta.cliente}</td>
-                      <td>
-                        {venta.productos.map(p => `${p.nombre} (${p.cantidad})`).join(', ')}
-                      </td>
+                      <td>{venta.productos.map(p => `${p.nombre} (${p.cantidad})`).join(', ')}</td>
                       <td>${venta.total}</td>
                       <td>{new Date().toLocaleDateString()}</td>
                     </tr>
