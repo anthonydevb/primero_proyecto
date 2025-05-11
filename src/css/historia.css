@@ -1,0 +1,26 @@
+/* Estilo básico para las tablas */
+
+.table-clientes, .table-productos {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-clientes th, .table-productos th,
+  .table-clientes td, .table-productos td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .table-clientes th, .table-productos th {
+    background-color: #f4f4f4;
+  }
+  
+  .table-clientes tr:nth-child(even), .table-productos tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .table-clientes tr:hover, .table-productos tr:hover {
+    background-color: #f1f1f1;
+  }
+  

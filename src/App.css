@@ -10,11 +10,29 @@
 .app-header {
   background: linear-gradient(45deg, #005eff, #000000);
   color: white;
-  padding: 1rem;
-  text-align: center;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between; /* ⬅️ separa izquierda y derecha */
+  align-items: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.logo-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.stats-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.stats-link:hover {
+  color: #ffd700; /* Amarillo al pasar el mouse */
+}
 /* Contenido principal de la app */
 .main-content {
   padding: 20px;
